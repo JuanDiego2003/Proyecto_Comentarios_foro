@@ -16,23 +16,25 @@ public class ComentarioController {
     @Autowired
     private ComentarioRepository comentarioRepository;
 
-    // Mostrar la vista de comentarios
     @GetMapping
-    public String listarComentarios(Model model) {
-        List<Comentario> comentarios = comentarioRepository.findAll();
-        model.addAttribute("comentarios", comentarios);
-        return "comentarios"; // Nombre del JSP
+    public String paginaInicial(Model model) {
+        model.addAttribute("comentarios", listarComentarios());
+        return "comentarios"; // Nombre de tu JSP
+    }
+
+    // Mostrar la vista de comentarios
+    @RequestMapping("/listar")
+    @ResponseBody
+    public List<Comentario> listarComentarios() {
+        return comentarioRepository.findAll(); // Devuelve los comentarios como JSON
     }
 
     // Agregar un nuevo comentario vía AJAX
+    @RequestMapping("/agregar")
     @PostMapping
     @ResponseBody
-    public Comentario agregarComentario(@RequestParam String texto) {
-        Comentario nuevoComentario = new Comentario(texto);
-        return comentarioRepository.save(nuevoComentario); // Retorna el comentario guardado
-    }
-    @GetMapping("/prueba")
-    public String prueba() {
-        return "comentarios"; // Nombre del JSP sin la extensión
+    public void agregarComentario(@RequestParam String texto) {
+        comentarioRepository.save(new Comentario(texto));
+        //return (nuevoComentario); // Retorna el comentario guardado
     }
 }
