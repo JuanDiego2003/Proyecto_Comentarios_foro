@@ -13,24 +13,60 @@
                     word-wrap: break-word;
                     white-space: normal;
                 }
+
+                .scroll-container {
+                    max-height: 300px;
+                    /* Ajusta la altura máxima del contenedor */
+                    overflow-y: auto;
+                    /* Activa el desplazamiento vertical */
+                    border: 1px solid #ddd;
+                    /* Opcional: agregar borde */
+                    padding: 15px;
+                    /* Espacio interno */
+                    border-radius: 5px;
+                    /* Bordes redondeados */
+                    background-color: #f8f9fa;
+                    /* Fondo opcional para distinguir el área */
+                }
+
+                .scroll-container::-webkit-scrollbar {
+                    width: 6px;
+                    /* Barra más delgada */
+                }
+
+                .scroll-container::-webkit-scrollbar-track {
+                    background: #f9f9f9;
+                    /* Color de la pista */
+                }
+
+                .scroll-container::-webkit-scrollbar-thumb {
+                    background: #ccc;
+                    /* Color del pulgar */
+                }
+
+                .scroll-container::-webkit-scrollbar-thumb:hover {
+                    background: #aaa;
+                    /* Color más oscuro al pasar el mouse */
+                }
             </style>
         </head>
 
         <body>
             <div class="container w-75">
-                <div class="text-center">
+                <div class="text-center row justify-content-center">
                     <h1 class="text-center">Proecto Foro</h1>
                     <!-- Formulario para añadir un comentario -->
                     <form id="comentarioForm" class="row justify-content-center">
+                        <label id="textAviso" class="text-start w-75 text-danger"></label>
                         <textarea id="textComentario" name="texto" class="form-control mb-3 w-75" rows="3" required
                             placeholder="Introduce tu comentario!"></textarea>
                         <button id="submit" type="submit" class="btn btn-primary w-50" disabled>Publicar
                             Comentario</button>
                     </form>
                     <!-- Lista de comentarios -->
-                    <div class="">
-                        <h2>Lista de Comentarios</h2>
-                        <div id="listaComentarios" class="text-start w-75 mx-auto">
+                    <h2>Lista de Comentarios</h2>
+                    <div class="scroll-container w-75">
+                        <div id="listaComentarios" class="text-start w-100 mx-auto">
                             <c:forEach var="comentario" items="${comentarios}">
                                 <div>
                                     <p class="text-wrap">${comentario.texto}</p>
@@ -82,57 +118,37 @@
                         }
                         if (correct) {
                             $('#submit').removeAttr('disabled');
-                            correct=false;
+                            $('#textAviso').text('');
+                            correct = false;
                         } else {
                             $('#submit').attr('disabled', true);
+                            $('#textAviso').text('No esta permitido añadir solo espacios ni saltos de linea.');
                         }
                     });
 
-                    $('#comentarioForm').on('submit', function () {
-                        for (let index = 0; index < alphabet.length; index++) {
-                            if ($('#textComentario').val().includes(alphabet[index])) {
-                                correct = true;
-                                break;
-                            }
-                        }
-                        if (correct) {
-                            e.preventDefault();
-                            $.ajax({
-                                type: 'POST',
-                                url: '/comentarios/agregar',
-                                data: $(this).serialize(),
-                                success: function (comentario) {
-                                    //Llama al metodo que se encarga de cargar los comentarios para que se actualice en ese momento
-                                    cargarComentarios();
-                                    $('#comentarioForm')[0].reset(); // Limpia el formulario
-                                    toastMixin.fire({
-                                        title: 'Se ha agregado el comentario con exito',
-                                    });
-                                },
-                                error: function () {
-                                    alert('Error al agregar el comentario.');
-                                    toastMixin.fire({
-                                        title: 'Ha ocurrido un error al agregar el comentario',
-                                        icon: 'error'
-                                    });
-                                }
-                            });
-                        } else {
-                            console.log('no puede ser un espacio en blanco');
-                            toastMixin.fire({
-                                animation: true,
-                                title: 'Verifica que haya un comentario ',
-                                icon: 'error'
-                            });
-                        }
+                    $('#comentarioForm').on('submit', function (e) {
 
+                        e.preventDefault();
+                        $.ajax({
+                            type: 'POST',
+                            url: '/comentarios/agregar',
+                            data: $(this).serialize(),
+                            success: function (comentario) {
+                                //Llama al metodo que se encarga de cargar los comentarios para que se actualice en ese momento
+                                cargarComentarios();
+                                $('#comentarioForm')[0].reset(); // Limpia el formulario
+                                toastMixin.fire({
+                                    title: 'Se ha agregado el comentario con exito',
+                                });
+                            },
+                        });
                     });
                     function cargarComentarios() {
                         $.ajax({
                             type: 'GET',
                             url: '/comentarios/listar', // Ruta que toma todos los comentarios de la base de datos
                             success: function (comentarios) {
-                                //console.log(comentarios);
+
                                 // Limpiar los comentarios antiguos
                                 $('#listaComentarios').empty();
                                 // Agregar los comentarios nuevos
@@ -141,7 +157,6 @@
                                 });
                             },
                             error: function () {
-                                console.log('Error al cargar los comentarios.');
                                 toastMixin.fire({
                                     title: 'Se ha producido un erro al cargar los comentarios',
                                     icon: 'error'

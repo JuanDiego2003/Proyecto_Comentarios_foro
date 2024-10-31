@@ -26,7 +26,7 @@ public class ComentarioController {
     @RequestMapping("/listar")
     @ResponseBody
     public List<Comentario> listarComentarios() {
-        return comentarioRepository.findAll(); // Devuelve los comentarios como JSON
+        return comentarioRepository.findAllOrderByIdAsc(); // Devuelve los comentarios como JSON
     }
 
     // Agregar un nuevo comentario vía AJAX
