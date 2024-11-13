@@ -65,13 +65,54 @@
             /* Cambia el tamaño a que ocupe el 10% del espacio */
             width: 10% !important;
             display: flex;
+
             #formLogin {
                 display: none;
             }
+
             h2 {
                 font-size: 1rem;
             }
         }
+
+        #register.change {
+            width: 100% !important;
+            display: block !important;
+
+            h2 {
+                font-size: calc(1.325rem + .9vw) !important;
+            }
+
+            #formRegister {
+                display: flex !important;
+            }
+
+            #mobile-login-text {
+                display: block !important;
+            }
+
+
+        }
+
+        #login.change {
+            display: none;
+
+            h2 {
+
+                font-size: 1.325rem !important;
+            }
+
+            #formLogin {
+                display: flex !important;
+            }
+
+            #mobile-login-text {
+                display: none;
+            }
+
+
+        }
+
 
 
         /*Color principal texto*/
@@ -102,11 +143,12 @@
             background-color: #9acfc3;
             color: #30358d;
         }
+
         /*Ocultar por defecto el formulario de registro*/
         #formRegister {
             display: none !important;
         }
-        
+
         /*Ocultar por defecto el texto de registro en móviles*/
         /*Pantalla grande*/
         @media (min-width: 768px) {
@@ -138,18 +180,20 @@
             }
 
             #mobile-register-text {
-                display: block;
+                display: block !important;
                 /* Muestra el texto de registro en móviles */
                 color: #151c8d;
                 text-align: center;
-                margin-top: 1rem;
+                margin-top: 0rem;
                 font-weight: bold;
             }
         }
 
         /* Oculta el texto de "Regístrate" en pantallas grandes */
-        #mobile-register-text {
+        #mobile-register-text,
+        #mobile-login-text {
             display: none;
+
         }
     </style>
 </head>
@@ -181,6 +225,9 @@
                             <input id="submitBtnLogin" type="submit" class="btn w-50" value="Iniciar">
                         </div>
                     </form>
+                    <div id="mobile-register-text" class="text-center pt-5">
+                        <p>¿No tienes cuenta? <a href="#" style="color: #151c8d; ">Regístrate</a></p>
+                    </div>
                 </div>
                 <div id="register" class="justify-content-center align-items-center">
                     <h2 class="fs-6 text">Registrate</h2>
@@ -192,8 +239,6 @@
                             <div class="inputs col-9">
                                 <input type="text" name="user" id="userNameRegister" class="form-control" required>
                             </div>
-                        </div>
-                        <div class="row g-3 align-items-center mt-3">
                             <div class="labels col-3">
                                 <label class="form-label text-end">Contraseña</label>
                             </div>
@@ -212,36 +257,40 @@
                                 <input id="submitBtnRegister" type="submit" class="btn w-50" value="Iniciar">
                             </div>
                         </div>
-                        <div class="row g-3 align-items-center mt-3">
                     </form>
+                    <div id="mobile-login-text" class="text-center pt-5">
+                        <p>¿Tienes cuenta? <a href="#" style="color: #b8d1cb;">Inicia sesi&oacute;n</a></p>
+                    </div>
                 </div>
-            </div>
-            <!-- Texto adicional para pantallas móviles -->
-            <div id="mobile-register-text">
-                <p>¿No tienes cuenta? <a href="registro" style="color: #151c8d;">Regístrate</a></p>
             </div>
         </div>
     </div>
     <script>
         $(document).ready(function () {
             let form = 'register';
+            let hover_click = true;
+
+            if ($(window).width() <= 768) {
+                hover_click = false;
+            }
+
             // Register configuration
             $('#register').hover(
                 function () {
-                    if (form === 'register') {
+                    if (form === 'register' && hover_click) {
                         //primer parametro, al pasar el raton por encima
                         colorChange(this, "#30358d", "#9acfc3");
                     }
                 }, function () {
                     // Segundo parametro: cuando el cursor sale
-                    if (form === 'register') {
+                    if (form === 'register' && hover_click) {
                         colorChange(this, "#151c8d", "#b8d1cb");
                     }
                 });
 
             // Evento para mostrar el formulario de registro
             $("#register").click(function () {
-                if (form === 'register') {
+                if (form === 'register' && hover_click) {
                     colorChange(this, "#151c8d", "#b8d1cb");
                     toggleForms();// Llama a la función para hacer la animación
                     form = 'login';
@@ -251,24 +300,45 @@
             //login configuration
             $('#login').hover(function () {
                 //primer parametro, al pasar el raton por encima
-                if (form === 'login') {
+                if (form === 'login' && hover_click) {
                     colorChange(this, "#9acfc3", "#30358d");
                 }
             }, function () {
                 // Segundo parametro: cuando el cursor sale
-                if (form === 'login') {
+                if (form === 'login' && hover_click) {
                     colorChange(this, "#b8d1cb", "#151c8d");
                 }
             });
 
             // Evento para mostrar el formulario de registro
             $("#login").click(function () {
-                if (form === 'login') {
+                if (form === 'login' && hover_click) {
                     toggleForms();// Llama a la función para hacer la animación
                     form = 'register';
                     colorChange(this, "#b8d1cb", "#99ada9");
                 }
             });
+
+            $('#mobile-register-text').click(function () {
+                toggleFormsMovile();
+                /*toggleForms();
+                $('#register').removeAttr('display');
+                $('#register').attr('style', 'display: flex !important;');
+                $('#register').attr('style', 'width: 100% !important;');
+                $('#login').attr('style', 'display: none !important;');
+                $('#mobile-login-text').attr('style', 'display: block! important;');*/
+            }
+            );
+            $('#mobile-login-text').click(function () {
+                toggleFormsMovile();
+                /*toggleForms();
+                $('#login').removeAttr('display');
+                $('#login').attr('style', 'display: flex !important;');
+                $('#login').attr('style', 'width: 100% !important;');
+                $('#register').attr('style', 'display: none !important;');
+                $('#mobile-register-text').attr('style', 'display: block! important;');*/
+            }
+            );
 
 
             //Funciones usadas
@@ -284,6 +354,12 @@
                 $('#register').toggleClass('active'); // Activa la animación de #register
                 $('#login').toggleClass('active'); // Activa la animación de #login
             }
+            // funcion para alternar formulario de login y el de registro en pantallas pequeñas
+            function toggleFormsMovile() {
+                $('#login').toggleClass('change');
+                $('#register').toggleClass('change');
+            }
+
         });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
