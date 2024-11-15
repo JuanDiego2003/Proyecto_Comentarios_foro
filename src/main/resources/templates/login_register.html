@@ -204,18 +204,18 @@
             <div class="row text-center h-100">
                 <div id="login" class="justify-content-center align-items-center">
                     <h2>Iniciar sesión</h2>
-                    <form th:action="@{/login}" id="formLogin">
+                    <form action="" method="post" id="formLogin">
                         <div class="row g-3 align-items-center mt-3">
                             <div class="labels col-3">
-                                <label class="form-label">Nombre de usuario</label>
+                                <label for="userName" class="form-label">Nombre de usuario</label>
                             </div>
                             <div class="inputs col-9">
-                                <input type="text" name="user" id="userName" class="form-control" required>
+                                <input type="text" name="username" id="userName" class="form-control" required>
                             </div>
                         </div>
                         <div class="row g-3 align-items-center mt-3">
                             <div class="labels col-3">
-                                <label class="form-label text-end">Contraseña</label>
+                                <label for="password" class="form-label text-end">Contraseña</label>
                             </div>
                             <div class="inputs col-9">
                                 <input type="password" name="password" id="password" class="form-control" required>
@@ -228,33 +228,43 @@
                     <div id="mobile-register-text" class="text-center pt-5">
                         <p>¿No tienes cuenta? <a href="#" style="color: #151c8d; ">Regístrate</a></p>
                     </div>
+                    <div th:if="${param.error}">
+                        <p style="color: red;">Error en el inicio de sesión. Verifica tu usuario o contraseña.</p>
+                    </div>
                 </div>
                 <div id="register" class="justify-content-center align-items-center">
                     <h2 class="fs-6 text">Registrate</h2>
-                    <form action="register" id="formRegister">
+
+                    <form th:action="@{/register}" method="post" id="formRegister"
+                        onsubmit="console.log('Formulario enviado');">
                         <div class="row g-3 align-items-center mt-3">
                             <div class="labels col-3">
-                                <label class="form-label">Nombre de usuario</label>
+                                <label for="newUserName" class="form-label">Nombre de usuario</label>
                             </div>
                             <div class="inputs col-9">
-                                <input type="text" name="user" id="userNameRegister" class="form-control" required>
+                                <input type="text" name="newUserName" id="newUserName" class="form-control" required>
                             </div>
                             <div class="labels col-3">
-                                <label class="form-label text-end">Contraseña</label>
+                                <label for="newPassword" class="form-label text-end">Contraseña</label>
                             </div>
                             <div class="inputs col-3">
-                                <input type="password" name="password" id="passwordRegister" class="form-control"
+                                <input type="password" name="newPassword" id="newPassword" class="passw form-control"
                                     required>
                             </div>
                             <div class="labels col-3">
-                                <label class="form-label text-end">Confirmar Contraseña</label>
+                                <label for="confirmPasswordRegister" class="form-label text-end">Confirmar
+                                    Contraseña</label>
                             </div>
                             <div class="inputs col-3">
-                                <input type="password" name="password" id="confirmPasswordRegister" class="form-control"
-                                    required>
+                                <input type="password" name="confirmPassword" id="confirmPasswordRegister"
+                                    class="passw form-control" required>
+                            </div>
+                            <div>
+                                <p class="fs-5 aviso-pass text-danger"></p>
                             </div>
                             <div class="mt-4">
-                                <input id="submitBtnRegister" type="submit" class="btn w-50" value="Iniciar">
+                                <input id="submitBtnRegister" type="submit" class="btn w-50" value="Registarse"
+                                    disabled>
                             </div>
                         </div>
                     </form>
@@ -269,6 +279,29 @@
         $(document).ready(function () {
             let form = 'register';
             let hover_click = true;
+
+            $('.passw').on('input', function () {
+                let password = $('#newPassword').val();
+                let confirmPassword = $('#confirmPasswordRegister').val();
+                // Resetear los estilos
+                $('.aviso-pass').text('');
+
+                if (password.length >= 8) {
+                    if (password === confirmPassword) {
+                        $('.passw').css('border', 'solid green');
+                        $('#submitBtnRegister').removeAttr('disabled');
+                    } else {
+                        $('.aviso-pass').text('Las contraseñas no coinciden');
+                        $('#submitBtnRegister').attr('disabled', 'true');
+                    }
+                } else {
+                    $('.aviso-pass').text('La contraseña debe tener 8 caracteres');
+                    $('.passw').css('border', 'solid red');
+                    $('#submitBtnRegister').attr('disabled', 'true');
+                }
+            });
+
+
 
             if ($(window).width() <= 768) {
                 hover_click = false;

@@ -9,10 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class MvcConfig implements WebMvcConfigurer {
 
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/comentario").setViewName("comentario");
-        registry.addViewController("/").setViewName("home");
-        //registry.addViewController("/hello").setViewName("hello");
-        registry.addViewController("/login_register").setViewName("login_register");
+        //Controladores automaticos, utiles para pantallas sin logica
     }
 
 }
