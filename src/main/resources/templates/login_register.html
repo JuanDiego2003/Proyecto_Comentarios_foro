@@ -13,7 +13,7 @@
             background-color: #b8d1cb;
         }
 
-        #project-title{
+        #project-title {
             color: #151c8d;
         }
 
@@ -199,7 +199,6 @@
             display: none;
 
         }
-        
     </style>
 </head>
 
@@ -318,6 +317,8 @@
                         }
                     }
                 });
+                console.log("user" + validateuser);
+                console.log("pass" + validatepass);
                 activateButonSubmitRegister();
             });
 
@@ -327,14 +328,18 @@
                 // Resetear los estilos
                 $('#aviso-pass').text('');
                 $('.passw').css('border', 'none');
-                if (regexp.test(password) && regexp.test(confirmPassword))  {
+                if (regex.test(password) === false && regex.test(confirmPassword) === false) {
                     return
                 }
+                console.log(password.length >= 8);
+
                 if (password.length >= 8) {
                     if (password === confirmPassword) {
                         $('.passw').css('border', 'solid green');
                         validatepass = true;
                     } else {
+                        $('.passw').css('border', 'none');
+                        $('#confirmPasswordRegister').css('border', 'solid red');
                         $('#aviso-pass').text('Las contraseñas no coinciden');
                         validatepass = false;
                     }
@@ -343,6 +348,7 @@
                     $('.passw').css('border', 'solid red');
                     validatepass = false;
                 }
+                console.log("pass" + validatepass);
                 activateButonSubmitRegister();
             });
 
