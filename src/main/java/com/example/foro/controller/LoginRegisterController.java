@@ -10,6 +10,7 @@ import java.util.concurrent.ExecutionException;
 
 
 @Controller
+@RequestMapping("/login_register")
 public class LoginRegisterController {
     private ComentarioRepository comentarioRepository;
     private final CustomUserDetailsService customUserDetailsService;
@@ -18,8 +19,7 @@ public class LoginRegisterController {
     public LoginRegisterController(CustomUserDetailsService customUserDetailsService) {
         this.customUserDetailsService = customUserDetailsService;
     }
-
-    @RequestMapping("/login_register")
+    @GetMapping
     public String PagLoginRegister() {
         return "login_register";
     }
@@ -33,12 +33,17 @@ public class LoginRegisterController {
             try {
                 customUserDetailsService.registrarUsuario(newUserName, newPassword);
             } catch (RuntimeException ignored) {
-                model.addAttribute("aviso", ignored);
+                model.addAttribute("aviso", ignored.getMessage());
                 model.addAttribute("newUserName", newUserName);
                 model.addAttribute("newPassword", newPassword);
                 model.addAttribute("confirmPassword", confirmPassword);
             }
         }
-        return "login_register";
+        return "redirect:login_register";
+    }
+    @PostMapping("/validate")
+    @ResponseBody
+    public boolean validateUser(@RequestParam String newUserName){
+        return customUserDetailsService.verificarUsuario(newUserName);
     }
 }

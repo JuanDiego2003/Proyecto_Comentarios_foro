@@ -13,6 +13,10 @@
             background-color: #b8d1cb;
         }
 
+        #project-title{
+            color: #151c8d;
+        }
+
         #global {
             border: 2px solid #151c8d;
             height: auto;
@@ -195,16 +199,20 @@
             display: none;
 
         }
+        
     </style>
 </head>
 
 <body>
-    <div class="d-flex justify-content-center align-items-center height">
+    <div class="d-flex flex-column justify-content-center align-items-center height">
+        <div class="container text-center mb-3">
+            <h1 id="project-title"><b>Proyecto Foro</b></h1>
+        </div>
         <div id="global" class="container w-75 rounded">
             <div class="row text-center h-100">
                 <div id="login" class="justify-content-center align-items-center">
                     <h2>Iniciar sesión</h2>
-                    <form action="" method="post" id="formLogin">
+                    <form th:action="@{/login}" method="post" id="formLogin">
                         <div class="row g-3 align-items-center mt-3">
                             <div class="labels col-3">
                                 <label for="userName" class="form-label">Nombre de usuario</label>
@@ -235,14 +243,14 @@
                 <div id="register" class="justify-content-center align-items-center">
                     <h2 class="fs-6 text">Registrate</h2>
 
-                    <form th:action="@{/register}" method="post" id="formRegister"
-                        onsubmit="console.log('Formulario enviado');">
+                    <form th:action="@{/login_register/register}" method="post" id="formRegister">
                         <div class="row g-3 align-items-center mt-3">
                             <div class="labels col-3">
                                 <label for="newUserName" class="form-label">Nombre de usuario</label>
                             </div>
                             <div class="inputs col-9">
                                 <input type="text" name="newUserName" id="newUserName" class="form-control" required>
+                                <p id="aviso-user" class="fs-5 text-danger"></p>
                             </div>
                             <div class="labels col-3">
                                 <label for="newPassword" class="form-label text-end">Contraseña</label>
@@ -260,7 +268,7 @@
                                     class="passw form-control" required>
                             </div>
                             <div>
-                                <p class="fs-5 aviso-pass text-danger"></p>
+                                <p id="aviso-pass" class="fs-5 text-danger"></p>
                             </div>
                             <div class="mt-4">
                                 <input id="submitBtnRegister" type="submit" class="btn w-50" value="Registarse"
@@ -277,30 +285,74 @@
     </div>
     <script>
         $(document).ready(function () {
+            let regex = /^[a-zA-Z0-9_+-]+$/;
             let form = 'register';
             let hover_click = true;
+            let validateuser = false;
+            let validatepass = false;
+
+            //Funciones de eventos
+
+            // Validar el nomber de usuario para registrar
+            $('#newUserName').on('blur', function () {
+                let userName = $(this).val();
+                // Resetear los estilos
+                $('#aviso-user').text("");
+                $('#newUserName').css('border', 'none');
+
+                if (regex.test(userName) === false) {
+                    return
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: 'login_register/validate',
+                    data: { 'newUserName': userName },
+                    success: function (checked) {
+                        if (checked === false) {
+                            validateuser = true;
+                            $('#newUserName').css('border', 'solid green');
+                        } else {
+                            validateuser = false;
+                            $('#newUserName').css('border', 'solid red');
+                            $('#aviso-user').text("Este usuario ya existe!");
+                        }
+                    }
+                });
+                activateButonSubmitRegister();
+            });
 
             $('.passw').on('input', function () {
                 let password = $('#newPassword').val();
                 let confirmPassword = $('#confirmPasswordRegister').val();
                 // Resetear los estilos
-                $('.aviso-pass').text('');
-
+                $('#aviso-pass').text('');
+                $('.passw').css('border', 'none');
+                if (regexp.test(password) && regexp.test(confirmPassword))  {
+                    return
+                }
                 if (password.length >= 8) {
                     if (password === confirmPassword) {
                         $('.passw').css('border', 'solid green');
-                        $('#submitBtnRegister').removeAttr('disabled');
+                        validatepass = true;
                     } else {
-                        $('.aviso-pass').text('Las contraseñas no coinciden');
-                        $('#submitBtnRegister').attr('disabled', 'true');
+                        $('#aviso-pass').text('Las contraseñas no coinciden');
+                        validatepass = false;
                     }
                 } else {
-                    $('.aviso-pass').text('La contraseña debe tener 8 caracteres');
+                    $('#aviso-pass').text('La contraseña debe tener 8 caracteres');
                     $('.passw').css('border', 'solid red');
-                    $('#submitBtnRegister').attr('disabled', 'true');
+                    validatepass = false;
                 }
+                activateButonSubmitRegister();
             });
 
+            function activateButonSubmitRegister() {
+                if (validateuser && validatepass) {
+                    $('#submitBtnRegister').removeAttr('disabled');
+                } else {
+                    $('#submitBtnRegister').attr('disabled', 'disabled');
+                }
+            }
 
 
             if ($(window).width() <= 768) {
@@ -392,6 +444,8 @@
                 $('#login').toggleClass('change');
                 $('#register').toggleClass('change');
             }
+
+
 
         });
     </script>

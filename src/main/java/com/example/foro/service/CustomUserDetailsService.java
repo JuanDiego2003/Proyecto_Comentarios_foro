@@ -21,9 +21,13 @@ public class CustomUserDetailsService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    public boolean verificarUsuario(String username) {
+        return userRepository.findByUsername(username) != null;
+    }
+
     //Registrar usuario con contraseña cifrada
     public void registrarUsuario(String username, String password) {
-        if (userRepository.findByUsername(username) != null) {
+        if (verificarUsuario(username)) {
             throw new RuntimeException("Este usuario ya esta registrado");
         }
 

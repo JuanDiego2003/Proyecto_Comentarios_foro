@@ -8,7 +8,7 @@ public class UserEntity {
     @Id
     private String username;
     private String password;
-    private String role;
+    private String role = "user"; //por ahora esta por defecto rol user
 
     public String getUsername() {
         return username;
