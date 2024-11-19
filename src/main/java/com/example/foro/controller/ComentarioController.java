@@ -30,8 +30,8 @@ public class ComentarioController {
     }
 
     // Agregar un nuevo comentario vía AJAX
-    @RequestMapping("/agregar")
-    @PostMapping
+    //@RequestMapping
+    @PostMapping("/agregar")
     @ResponseBody
     public void agregarComentario(@RequestParam String texto) {
         comentarioRepository.save(new Comentario(texto));
