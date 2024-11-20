@@ -1,12 +1,11 @@
-# Proyecto de Práctica con Spring Boot
-
+# Tu Foro
 Este proyecto fue desarrollado con el propósito de **practicar y reforzar habilidades** en el uso de **Spring Boot**, implementando conceptos fundamentales como el patrón **MVC (Modelo-Vista-Controlador)**, **Spring Security** para autenticación y autorización, y la creación y conexión de una base de datos **SQL**.
 
 ## Descripción
 
 El objetivo principal de este proyecto fue aprender y aplicar las siguientes tecnologías y conceptos:
 - **Spring MVC**: Diseño de la arquitectura en capas para separar la lógica del programa, la presentación y los datos.
-- **Spring Security**: Configuración de autenticación y autorización mediante comprobación de usuarios registrador en la base de datos.
+- **Spring Security**: Configuración de autenticación y autorización mediante comprobación de usuarios registrados en la base de datos.
 - **Base de Datos SQL**: Creación de un esquema de base de datos, conexión a la aplicación mediante JPA/Hibernate, y ejecución de operaciones CRUD (Crear, Leer, Actualizar, Eliminar).
 
 > **Nota:** Este proyecto no está destinado a producción, sino que es una práctica personal para comprender cómo integrar estas tecnologías.
@@ -23,9 +22,10 @@ El objetivo principal de este proyecto fue aprender y aplicar las siguientes tec
 Sigue estos pasos para ejecutar el proyecto localmente:
 
 1. **Clona este repositorio**:
+   
    git clone https://github.com/JuanDiego2003/Proyecto_Tu_Foro.git
 
-2. **Instrucciones para importar la base de datos**   
+3. **Instrucciones para importar la base de datos**   
     1. **Instalar XAMPP**:
        - Si aún no tienes **XAMPP** instalado, descárgalo e instálalo desde [XAMPP.org](https://www.apachefriends.org/index.html).
 
@@ -36,10 +36,13 @@ Sigue estos pasos para ejecutar el proyecto localmente:
        - Haz clic en la pestaña **Importar**.
        - Selecciona el archivo `.sql` que descargaste desde el repositorio (`tu_foro_database.sql`).
        - Haz clic en **Ejecutar**.
-      > **Nota:** la aplicacion ya esta configurada enapplication.properties para conectarse a la base de datos.
+      > **Nota:** La aplicacion ya está configurada en `application.properties` para conectarse a la base de datos.
 
   4. **Ejecutar la aplicación**:
      - Ahora, puedes ejecutar la aplicación y debería conectarse a la base de datos importada.
+
+## Estado del Proyecto
+Este proyecto se encuentra en **constante desarrollo**. Se están implementando nuevas funcionalidades, mejoras y correcciones.
 ## Créditos
 - [Juan Diego](https://github.com/JuanDiego2003) - Creador principal
 
