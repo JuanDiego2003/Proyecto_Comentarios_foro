@@ -14,7 +14,7 @@ El objetivo principal de este proyecto fue aprender y aplicar las siguientes tec
 ## Características
 
 - Registro de usuarios y autenticación con credenciales seguras.
-- Sistema de autenticación de usuario y contraseña para autorización de acceso (futuramente posible integracion de diferentes roles, por ahora todos son por defecto user).
+- Sistema de autenticación de usuario y contraseña para autorización de acceso (futuramente posible integración de diferentes roles, por ahora todos son por defecto user).
 - Gestión de una base de datos SQL utilizando JPA y Hibernate.
 - Organización en un esquema de MVC para mantener el código limpio y modular.
 
