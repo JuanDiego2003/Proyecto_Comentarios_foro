@@ -41,8 +41,13 @@ Sigue estos pasos para ejecutar el proyecto localmente:
   4. **Ejecutar la aplicación**:
      - Ahora, puedes ejecutar la aplicación y debería conectarse a la base de datos importada.
 
+##Información extra
+En la ruta /docs se puede encontrar un pdf con el modelo de entidad relación de la base de datos para un mejor entendimiento, futuramente se añadirá mas documentación del proyecto a esta ruta.
+   >**Nota:** Enlace de la pagina donde visualizar el modelo de entidad relacion `https://dbdiagram.io/d/Tu_Foro_DDBB-673f84ebe9daa85aca4b304f`
+
 ## Estado del Proyecto
 Este proyecto se encuentra en **constante desarrollo**. Se están implementando nuevas funcionalidades, mejoras y correcciones.
+
 ## Créditos
 - [Juan Diego](https://github.com/JuanDiego2003) - Creador principal
 
