@@ -290,36 +290,41 @@
             let validateuser = false;
             let validatepass = false;
 
+            let debounceTimer; // Variable para almacenar el temporizador del debounce
+
             //Funciones de eventos
 
             // Validar el nomber de usuario para registrar
             $('#newUserName').on('blur', function () {
-                let userName = $(this).val();
-                // Resetear los estilos
-                $('#aviso-user').text("");
-                $('#newUserName').css('border', 'none');
+                clearTimeout(debounceTimer); // Limpia cualquier temporizador que exista
+                debounceTimer = setTimeout(() => { //Configura un nuevo temporizador
+                    let userName = $(this).val();
+                    // Resetear los estilos
+                    $('#aviso-user').text("");
+                    $('#newUserName').css('border', 'none');
 
-                if (regex.test(userName) === false) {
-                    return
-                }
-                $.ajax({
-                    type: 'POST',
-                    url: 'login_register/validate',
-                    data: { 'newUserName': userName },
-                    success: function (checked) {
-                        if (checked === false) {
-                            validateuser = true;
-                            $('#newUserName').css('border', 'solid green');
-                        } else {
-                            validateuser = false;
-                            $('#newUserName').css('border', 'solid red');
-                            $('#aviso-user').text("Este usuario ya existe!");
-                        }
+                    if (regex.test(userName) === false) {
+                        return
                     }
-                });
-                console.log("user" + validateuser);
-                console.log("pass" + validatepass);
-                activateButonSubmitRegister();
+                    $.ajax({
+                        type: 'POST',
+                        url: 'login_register/validate',
+                        data: { 'newUserName': userName },
+                        success: function (checked) {
+                            if (checked === false) {
+                                validateuser = true;
+                                $('#newUserName').css('border', 'solid green');
+                            } else {
+                                validateuser = false;
+                                $('#newUserName').css('border', 'solid red');
+                                $('#aviso-user').text("Este usuario ya existe!");
+                            }
+                        }
+                    });
+                    console.log("user" + validateuser);
+                    console.log("pass" + validatepass);
+                    activateButonSubmitRegister();
+                }, 300);// tiempo de retraso
             });
 
             $('.passw').on('input', function () {

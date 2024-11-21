@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-11-2024 a las 17:11:19
+-- Tiempo de generación: 21-11-2024 a las 21:27:55
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -24,69 +24,141 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `comentario`
+-- Estructura de tabla para la tabla `coment`
 --
 
-CREATE TABLE `comentario` (
-  `id` bigint(20) NOT NULL,
-  `texto` varchar(255) NOT NULL
+CREATE TABLE `coment` (
+  `id_comentario` int(11) NOT NULL,
+  `contenido` varchar(255) NOT NULL,
+  `id_publicacion` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `comentario`
---
-
-INSERT INTO `comentario` (`id`, `texto`) VALUES
-(1, 'prueba'),
-(2, 'muestra de comentarios'),
-(3, 'prureba de cambio de linea automatica aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `user_entity`
+-- Estructura de tabla para la tabla `likes`
 --
 
-CREATE TABLE `user_entity` (
-  `username` varchar(255) NOT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  `role` varchar(255) DEFAULT NULL
+CREATE TABLE `likes` (
+  `id_like` int(11) NOT NULL,
+  `id_publicacion` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
 --
--- Volcado de datos para la tabla `user_entity`
+-- Estructura de tabla para la tabla `pubication`
 --
 
-INSERT INTO `user_entity` (`username`, `password`, `role`) VALUES
-('prueba', '$2a$10$oeDs9qMOEaHgdUeq7135he/PEXk.EiEhJupksFkL/HJULkeFK2slO', 'user'),
-('prueba2', '$2a$10$iwDP10ibtETsRE72ZBJt5unS/7uNlpslXVWYSNQJZPiDhmiDK7elC', 'user'),
-('prueba2', '$2a$10$qAqJyg3qAliiWxB9SE6/pu20IsyU2l2dLlf2PYnfB5SRUDIiKgVm6', 'user');
+CREATE TABLE `pubication` (
+  `id_publicacion` int(11) NOT NULL,
+  `contenido` varchar(255) NOT NULL,
+  `titulo` varchar(255) NOT NULL,
+  `id_usuario` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `user`
+--
+
+CREATE TABLE `user` (
+  `id_usuario` int(11) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `fecha_registro` timestamp NULL DEFAULT current_timestamp(),
+  `password` varchar(255) NOT NULL,
+  `role` varchar(255) NOT NULL,
+  `username` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Índices para tablas volcadas
 --
 
 --
--- Indices de la tabla `comentario`
+-- Indices de la tabla `coment`
 --
-ALTER TABLE `comentario`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `coment`
+  ADD PRIMARY KEY (`id_comentario`),
+  ADD KEY `FK32tnyf4n6njsyireytag6syd5` (`id_publicacion`),
+  ADD KEY `FK5jv8ol5wyrw0cgnfvdbbjcltn` (`id_usuario`);
 
 --
--- Indices de la tabla `user_entity`
+-- Indices de la tabla `likes`
 --
-ALTER TABLE `user_entity`
-  ADD PRIMARY KEY (`username`);
+ALTER TABLE `likes`
+  ADD PRIMARY KEY (`id_like`),
+  ADD KEY `FKbqgjlt19flgjrqye2v8xqv9x2` (`id_publicacion`),
+  ADD KEY `FKecv36t05ll99dnq0bdprfgguo` (`id_usuario`);
+
+--
+-- Indices de la tabla `pubication`
+--
+ALTER TABLE `pubication`
+  ADD PRIMARY KEY (`id_publicacion`),
+  ADD KEY `FK12ewo2g5636fda3o560w536o6` (`id_usuario`);
+
+--
+-- Indices de la tabla `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id_usuario`),
+  ADD UNIQUE KEY `UKob8kqyqqgmefl0aco34akdtpe` (`email`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT de la tabla `comentario`
+-- AUTO_INCREMENT de la tabla `coment`
 --
-ALTER TABLE `comentario`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+ALTER TABLE `coment`
+  MODIFY `id_comentario` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `likes`
+--
+ALTER TABLE `likes`
+  MODIFY `id_like` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `pubication`
+--
+ALTER TABLE `pubication`
+  MODIFY `id_publicacion` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `user`
+--
+ALTER TABLE `user`
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `coment`
+--
+ALTER TABLE `coment`
+  ADD CONSTRAINT `FK32tnyf4n6njsyireytag6syd5` FOREIGN KEY (`id_publicacion`) REFERENCES `pubication` (`id_publicacion`),
+  ADD CONSTRAINT `FK5jv8ol5wyrw0cgnfvdbbjcltn` FOREIGN KEY (`id_usuario`) REFERENCES `user` (`id_usuario`);
+
+--
+-- Filtros para la tabla `likes`
+--
+ALTER TABLE `likes`
+  ADD CONSTRAINT `FKbqgjlt19flgjrqye2v8xqv9x2` FOREIGN KEY (`id_publicacion`) REFERENCES `pubication` (`id_publicacion`),
+  ADD CONSTRAINT `FKecv36t05ll99dnq0bdprfgguo` FOREIGN KEY (`id_usuario`) REFERENCES `user` (`id_usuario`);
+
+--
+-- Filtros para la tabla `pubication`
+--
+ALTER TABLE `pubication`
+  ADD CONSTRAINT `FK12ewo2g5636fda3o560w536o6` FOREIGN KEY (`id_usuario`) REFERENCES `user` (`id_usuario`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

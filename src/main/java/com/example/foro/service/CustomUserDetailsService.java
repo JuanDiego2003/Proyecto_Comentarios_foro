@@ -1,7 +1,7 @@
 package com.example.foro.service;
 
 import org.springframework.security.core.userdetails.User;
-import com.example.foro.entidad.UserEntity;
+import com.example.foro.entidad.userEntity;
 import com.example.foro.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -31,17 +31,18 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new RuntimeException("Este usuario ya esta registrado");
         }
 
-        UserEntity user = new UserEntity();
+        userEntity user = new userEntity();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
+        user.setEmail("");
         userRepository.save(user);
     }
 
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         // Buscar el usuario en la base de datos
-        UserEntity UserEntity = userRepository.findByUsername(username);
+        userEntity UserEntity = userRepository.findByUsername(userName);
 
         if (UserEntity == null) {
             throw new UsernameNotFoundException("Usuario no encontrado");
