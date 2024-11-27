@@ -19,7 +19,7 @@
 
         /* Estilos para la hamburguesa */
         .burger {
-            margin-top: 8px;
+            margin-top: 12px;
             position: fixed;
             width: 40px;
             height: 30px;
@@ -82,11 +82,11 @@
 
         .user {
             position: fixed;
-            top: 18px;
+            top: 25px;
             z-index: 20;
-            padding-right: 6px;
             cursor: pointer;
             transition: transform 0.3s ease-in-out;
+            right: 16px;
 
             input {
                 display: none;
@@ -99,10 +99,7 @@
 
         #div-user {
             align-content: center;
-
-            h4 {
-                padding-top: 6px;
-            }
+            width: 42px;
         }
 
 
@@ -129,11 +126,11 @@
         #drawer-user {
             position: fixed;
             top: 0;
-            right: -200px;
-            width: 200px;
+            right: -250px;
+            width: 250px;
             height: 100%;
             background-color: #f8f9fa;
-            box-shadow: 2px 0 5px #151c8d;
+            box-shadow: -2px 0 5px #151c8d;
             overflow-y: auto;
             transition: transform 0.3s ease-in-out;
             padding: 15px;
@@ -154,78 +151,30 @@
             .burger {
                 margin-top: 6px;
             }
+
+            .user {
+                top: 20px;
+            }
+
+            #scroll-up {
+                width: 36px;
+                height: 36px;
+            }
         }
 
-        /* From Uiverse.io by Nawsome */
+
         .arrow {
-            cursor: pointer;
-            transform: translateX(-50%) translateY(-50%);
-            transition: transform 0.1s;
-            width: 28px;
-            top: 10px;
-            padding-top: 19px;
-        }
-
-        .arrow-top,
-        .arrow-bottom {
+            width: 42px;
+            height: 42px;
+            border-radius: 4px;
             background-color: #b8d1cb;
-            height: 4px;
-            left: -5px;
-            position: absolute;
-            top: 50%;
-            width: 100%;
+            display: flex;
+            transform: rotate(270deg);
+
         }
 
-        .arrow-top:after,
-        .arrow-bottom:after {
-            background-color: #151c8d;
-            content: "";
-            height: 100%;
-            position: absolute;
-            top: 0;
-            transition: all 0.15s;
-        }
-
-        .arrow-top {
-            transform: rotate(45deg);
-            transform-origin: bottom right;
-        }
-
-        .arrow-top:after {
-            left: 100%;
-            right: 0;
-            transition-delay: 0s;
-        }
-
-        .arrow-bottom {
-            transform: rotate(-45deg);
-            transform-origin: top right;
-        }
-
-        .arrow-bottom:after {
-            left: 0;
-            right: 100%;
-            transition-delay: 0.15s;
-        }
-
-        .arrow:hover .arrow-top:after {
-            left: 0;
-            transition-delay: 0.15s;
-        }
-
-        .arrow:hover .arrow-bottom:after {
-            right: 0;
-            transition-delay: 0s;
-        }
-
-        .arrow:active {
-            transform: translateX(-50%) translateY(-50%) scale(0.9);
-        }
-
-        .flip {
-            transform: translateX(-50%) translateY(-50%) scaleX(-1);
-            top: -18px;
-            position: relative;
+        .arrow:hover {
+            background-color: #81948f;
         }
     </style>
 </head>
@@ -246,12 +195,13 @@
         <div id="div-user">
             <label class="user" for="user">
                 <input type="checkbox" id="user">
-                <h4 class="a">user</h4>
-                <div class="arrow">
-                    <div class="flip">
-                        <div class="arrow-top"></div>
-                        <div class="arrow-bottom"></div>
-                    </div>
+                <div id="arrow" class="arrow">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0 0h24v24H0z" fill="none"></path>
+                        <path fill="#151c8d"
+                            d="M11.9997 10.8284L7.04996 15.7782L5.63574 14.364L11.9997 8L18.3637 14.364L16.9495 15.7782L11.9997 10.8284Z">
+                        </path>
+                    </svg>
                 </div>
             </label>
         </div>
@@ -269,14 +219,18 @@
             <li><a href="#">Cerrar Sesión</a></li>
         </ul>
     </div>
-    <div id="drawer-user">
-        <h2>Mis publicaciones</h2>
-        <ul>
-            <li><a href="#">Inicio</a></li>
-            <li><a href="#">Perfil</a></li>
-            <li><a href="#">Configuración</a></li>
-            <li><a href="#">Cerrar Sesión</a></li>
-        </ul>
+    <div id="drawer-user" class="">
+        <div class="">
+            <div class="text-center">
+                <h2>User</h2>
+            </div>
+            <ul>
+                <li><a href="#">Inicio</a></li>
+                <li><a href="#">Perfil</a></li>
+                <li><a href="#">Configuración</a></li>
+                <li><a href="#">Cerrar Sesión</a></li>
+            </ul>
+        </div>
     </div>
 
 
@@ -311,11 +265,14 @@
                     if ($(window).width() <= 768) {
                         drawers(drawerElement, userElemet, -200, -200);
                     } else {
-                        drawers(drawerElement, userElemet, -200, -100);
+
+                        $('#arrow').css('transform', 'rotate(90deg)');
+                        drawers(drawerElement, userElemet, -250, -170);
                     }
 
                 } else {
                     //userElemet.css('position','inherit');
+                    $('#arrow').css('transform', 'rotate(270deg)');
                     drawers(drawerElement, userElemet, 0, 0);
                 }
             });
