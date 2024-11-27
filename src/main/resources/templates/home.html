@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        nav {
+            justify-content: space-between;
+        }
+
+        #title {
+            color: #151c8d;
+        }
+
+        /* Estilos para la hamburguesa */
+        .burger {
+            margin-top: 8px;
+            position: fixed;
+            width: 40px;
+            height: 30px;
+            background: transparent;
+            cursor: pointer;
+            z-index: 20;
+            transition: transform 0.3s ease-in-out;
+
+            input {
+                display: none;
+            }
+
+            span {
+                display: block;
+                position: absolute;
+                height: 4px;
+                width: 100%;
+                background: #151c8d;
+                border-radius: 9px;
+                opacity: 1;
+                left: 0;
+                transform: rotate(0deg);
+                transition: .25s ease-in-out;
+            }
+
+            span:nth-of-type(1) {
+                top: 0px;
+                transform-origin: left center;
+            }
+
+            span:nth-of-type(2) {
+                top: 50%;
+                transform: translateY(-50%);
+                transform-origin: left center;
+            }
+
+            span:nth-of-type(3) {
+                top: 100%;
+                transform-origin: left center;
+                transform: translateY(-100%);
+            }
+
+            input:checked~span:nth-of-type(1) {
+                transform: rotate(45deg);
+                top: 0px;
+                left: 5px;
+            }
+
+            input:checked~span:nth-of-type(2) {
+                width: 0%;
+                opacity: 0;
+            }
+
+            input:checked~span:nth-of-type(3) {
+                transform: rotate(-45deg);
+                top: 28px;
+                left: 5px;
+            }
+        }
+
+        .user {
+            position: fixed;
+            top: 18px;
+            z-index: 20;
+            padding-right: 6px;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+
+            input {
+                display: none;
+            }
+        }
+
+        #div-burger {
+            width: 40px;
+        }
+
+        #div-user {
+            align-content: center;
+
+            h4 {
+                padding-top: 6px;
+            }
+        }
+
+
+        /* Drawer-Publications styles */
+        #drawer-Publications {
+            position: fixed;
+            top: 0;
+            left: -350px;
+            width: 350px;
+            height: 100%;
+            background-color: #f8f9fa;
+            box-shadow: 2px 0 5px #151c8d;
+            overflow-y: auto;
+            transition: transform 0.3s ease-in-out;
+            padding: 15px;
+            z-index: 10;
+
+            h2 {
+                color: #151c8d;
+            }
+        }
+
+        /* Drawer-user styles */
+        #drawer-user {
+            position: fixed;
+            top: 0;
+            right: -200px;
+            width: 200px;
+            height: 100%;
+            background-color: #f8f9fa;
+            box-shadow: 2px 0 5px #151c8d;
+            overflow-y: auto;
+            transition: transform 0.3s ease-in-out;
+            padding: 15px;
+            z-index: 10;
+
+            h2 {
+                color: #151c8d;
+            }
+        }
+
+        /*Drawer-publications in Mobile */
+        @media (max-width: 768px) {
+            #drawer-Publications {
+                left: -300px;
+                width: 300px;
+            }
+
+            .burger {
+                margin-top: 6px;
+            }
+        }
+
+        /* From Uiverse.io by Nawsome */
+        .arrow {
+            cursor: pointer;
+            transform: translateX(-50%) translateY(-50%);
+            transition: transform 0.1s;
+            width: 28px;
+            top: 10px;
+            padding-top: 19px;
+        }
+
+        .arrow-top,
+        .arrow-bottom {
+            background-color: #b8d1cb;
+            height: 4px;
+            left: -5px;
+            position: absolute;
+            top: 50%;
+            width: 100%;
+        }
+
+        .arrow-top:after,
+        .arrow-bottom:after {
+            background-color: #151c8d;
+            content: "";
+            height: 100%;
+            position: absolute;
+            top: 0;
+            transition: all 0.15s;
+        }
+
+        .arrow-top {
+            transform: rotate(45deg);
+            transform-origin: bottom right;
+        }
+
+        .arrow-top:after {
+            left: 100%;
+            right: 0;
+            transition-delay: 0s;
+        }
+
+        .arrow-bottom {
+            transform: rotate(-45deg);
+            transform-origin: top right;
+        }
+
+        .arrow-bottom:after {
+            left: 0;
+            right: 100%;
+            transition-delay: 0.15s;
+        }
+
+        .arrow:hover .arrow-top:after {
+            left: 0;
+            transition-delay: 0.15s;
+        }
+
+        .arrow:hover .arrow-bottom:after {
+            right: 0;
+            transition-delay: 0s;
+        }
+
+        .arrow:active {
+            transform: translateX(-50%) translateY(-50%) scale(0.9);
+        }
+
+        .flip {
+            transform: translateX(-50%) translateY(-50%) scaleX(-1);
+            top: -18px;
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="d-flex p-3 ">
+        <div id="div-burger">
+            <label class="burger" for="burger">
+                <input type="checkbox" id="burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+        </div>
+        <div id="title" class="text-center">
+            <h1><b>Tu Foro</b></h1>
+        </div>
+        <div id="div-user">
+            <label class="user" for="user">
+                <input type="checkbox" id="user">
+                <h4 class="a">user</h4>
+                <div class="arrow">
+                    <div class="flip">
+                        <div class="arrow-top"></div>
+                        <div class="arrow-bottom"></div>
+                    </div>
+                </div>
+            </label>
+        </div>
+    </nav>
+    <div>
+
+    </div>
+    <!-- Drawers -->
+    <div id="drawer-Publications">
+        <h2>Mis publicaciones</h2>
+        <ul>
+            <li><a href="#">Inicio</a></li>
+            <li><a href="#">Perfil</a></li>
+            <li><a href="#">Configuración</a></li>
+            <li><a href="#">Cerrar Sesión</a></li>
+        </ul>
+    </div>
+    <div id="drawer-user">
+        <h2>Mis publicaciones</h2>
+        <ul>
+            <li><a href="#">Inicio</a></li>
+            <li><a href="#">Perfil</a></li>
+            <li><a href="#">Configuración</a></li>
+            <li><a href="#">Cerrar Sesión</a></li>
+        </ul>
+    </div>
+
+
+
+    <script>
+        $(document).ready(function () {
+            // Variables
+
+            // Evenyo para abrir/cerrar el drawer-Publications
+            $('#burger').on('change', function () {
+                //Variables
+                let drawerElement = $('#drawer-Publications');
+                let burgerElemet = $('.burger');
+
+                if ($(this).is(':checked')) {
+                    //pantallas mobile
+                    if ($(window).width() <= 768) {
+                        drawers(drawerElement, burgerElemet, 300, 240);
+                    } else {
+                        drawers(drawerElement, burgerElemet, 350, 290);
+                    }
+                } else {
+                    drawers(drawerElement, burgerElemet, -350, 0);
+                }
+            });
+            $('#user').on('change', function () {
+                //Variables
+                let drawerElement = $('#drawer-user');
+                let userElemet = $('.user');
+                if ($(this).is(':checked')) {
+                    //pantallas mobile
+                    if ($(window).width() <= 768) {
+                        drawers(drawerElement, userElemet, -200, -200);
+                    } else {
+                        drawers(drawerElement, userElemet, -200, -100);
+                    }
+
+                } else {
+                    //userElemet.css('position','inherit');
+                    drawers(drawerElement, userElemet, 0, 0);
+                }
+            });
+
+            //Function drawers
+            function drawers(drawerElement, element, translateDrawer, translateElement) {
+                drawerElement.css('transform', 'translateX(' + translateDrawer + 'px)');
+                element.css('transform', 'translateX(' + translateElement + 'px)');
+            }
+        });
+    </script>
+</body>
+
+</html>
